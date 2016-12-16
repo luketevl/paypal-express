@@ -2,7 +2,7 @@
 > Esse modulo faz a comunicação com a **API** do **PayPal** via **SDK**
 
 # Pre requisitos
-- **php v5.5** ou maior
+- **php v5.5** ou superior
 - **Composer**
 - **OpenSSL/1.0.2g**
 
@@ -26,11 +26,11 @@ Name | Type |Value
 numIdentify | String(alphanumeric) | Identificador do pagamento, _usado para futuramente saber qual pedido é de quem_
 description | String | Descrição do pagamento
 returnUrl | String |  URL de **retorno**
-cancelUrl | String | URL de **cancelamento**
-products  | Array  | _veja tabela de campos de itens_
-shipping  | Double | Valor do _frete_
-tax       | Double | Valor do _imposto_
-total       | Double | Valor _total_ incluindo taxas e outros
+cancelUrl | String |  URL de **cancelamento**
+products  | Array  | _Opcional_ _veja tabela de campos de itens_
+shipping  | Double | _Opcional_ Valor do _frete_
+tax       | Double | _Opcional_ Valor do _imposto_
+total     | Double | _Opcional_ Valor _total_ incluindo taxas e outros
 
 | Double | Valor do _frete_
 
@@ -44,7 +44,7 @@ cod            | String | Código do produto
 name           | String | Nome do item
 description    | String | Descrição do item
 price          | Double | Preço do item
-qty            | Double | Quantidade do item
+qty            | Int | Quantidade do item
 
 
 
@@ -55,4 +55,9 @@ qty            | Double | Quantidade do item
 
 
 # Referências
+- https://developer.paypal.com/docs/api/payments/#definition-incentive
+- https://developer.paypal.com/docs/integration/direct/express-checkout/create-express-checkout-payments/
+- https://developer.paypal.com/docs/classic/api/errors/
 - https://developer.paypal.com/docs/integration/web/accept-paypal-payment/
+- https://github.com/paypal/PayPal-PHP-SDK
+- http://paypal.github.io/PayPal-PHP-SDK/sample
