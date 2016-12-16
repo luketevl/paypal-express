@@ -19,4 +19,15 @@
     }
   }
 
+  if(!function_exists('getNumber')){
+    function getNumber($number= 0){
+      try{
+        return number_format($number, 2);
+      }
+      catch (Exception $e) {
+          return 0;
+      }
+
+    }
+  }
 ?>
