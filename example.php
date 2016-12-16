@@ -6,7 +6,7 @@ spl_autoload_register(function ($class_name) {
 $ex = new MyPayPal();
 
 $data = array(
-              'description' => 'Teste pagamento',
+              'description' => 'Test PAY',
               'returnUrl' => 'https://return',
               'cancelUrl' => 'https://cancel',
               'shipping' => 0.01,
