@@ -98,7 +98,7 @@ class MyPayPal{
     // such as shipping, tax.
     $total = getNumber(getVal('total', $data)) ? getNumber(getVal('shipping', $data)) : $sumSubTotal + getNumber(getVal('shipping', $data)) + getNumber(getVal('tax', $data));
     $amount->setCurrency("BRL")
-        ->setTotal(0)
+        ->setTotal($total)
         ->setDetails($details);
 
     // ### Transaction
@@ -147,24 +147,25 @@ class MyPayPal{
     // url to which the buyer must be redirected to
     // for payment approval
 
-    $return = array('result' => false, 'error' => false);
+    $return = array('result' => false);
 
     try {
         $payment->create($this->apiContext);
+        $return['result'] = array(
+                                  'urlPay' => $payment->getApprovalLink()
+        );
     }
     catch (Exception $ex) {
-      $return = $this->_getError($ex);
-
+      $return = array_merge($return, $this->_getError($ex));
       pre('EX:');
       pre($ex);
+
     }
     // ### Get redirect url
     // The API response provides the url that you must redirect
     // the buyer to. Retrieve the url from the $payment->getApprovalLink()
     // method
-    $return['result'] = array(
-                              'urlPay' => $payment->getApprovalLink()
-    );
+pre('kole');
     pre($return);
     return $return;
   }
@@ -172,16 +173,14 @@ class MyPayPal{
   private function _getError($param = array()){
     if(count($param) <= 0) return array('error' => false);
 
-    $return = array(
-                    'error'   => array(
-                      'details' => $param->details
-                    ),
-
-    );
     $data   = json_decode($param->getData());
+    $return = array(
+                    'error'   => $data->details
+    );
 
     pre('data');
     pre($data);
+    return $return;
   }
 
 

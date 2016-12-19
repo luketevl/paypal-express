@@ -7,6 +7,10 @@
 - **OpenSSL/1.0.2g**
 
 # Configuração
+- **Instale as dependencias**
+```shell
+composer install
+```
 - Adicione esse módulo no seu projeto, utilizando o **git submodules**
   - https://git-scm.com/docs/git-submodule
 > Exemplo
