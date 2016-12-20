@@ -8,10 +8,18 @@
 
 # Configuração
 - Adicione esse módulo no seu projeto, utilizando o **git submodules**
-- https://git-scm.com/docs/git-submodule
+  - https://git-scm.com/docs/git-submodule
 > Exemplo
 ```git
-git submodule add -f https://github.com/luketevl/paypal-express
+git submodule add -f https://github.com/luketevl/paypal-express.git
+```
+- _Inicialize_ os submodules
+```git
+git submodule init
+```
+- _Atualize_ os submodules
+```git
+git submodule init
 ```
 - **Instale as dependencias**
 ```shell
