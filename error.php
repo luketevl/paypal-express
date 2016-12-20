@@ -7,7 +7,6 @@ $ex = new MyPayPal();
 
 $data = array(
               'description' => 'Test PAY',
-              'returnUrl' => 'https://return',
               'cancelUrl' => 'https://cancel',
               'shipping' => 0.01,
               'tax'     => 0.02,

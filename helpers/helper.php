@@ -22,6 +22,9 @@
   if(!function_exists('getNumber')){
     function getNumber($number= 0){
       try{
+        if(empty($number)){
+          return 0;
+        }
         return number_format($number, 2);
       }
       catch (Exception $e) {

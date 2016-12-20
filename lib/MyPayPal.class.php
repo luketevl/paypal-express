@@ -156,17 +156,14 @@ class MyPayPal{
         );
     }
     catch (Exception $ex) {
+
       $return = array_merge($return, $this->_getError($ex));
-      pre('EX:');
-      pre($ex);
 
     }
     // ### Get redirect url
     // The API response provides the url that you must redirect
     // the buyer to. Retrieve the url from the $payment->getApprovalLink()
     // method
-pre('kole');
-    pre($return);
     return $return;
   }
 
@@ -178,8 +175,6 @@ pre('kole');
                     'error'   => $data->details
     );
 
-    pre('data');
-    pre($data);
     return $return;
   }
 

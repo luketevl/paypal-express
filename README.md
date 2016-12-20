@@ -7,15 +7,15 @@
 - **OpenSSL/1.0.2g**
 
 # Configuração
+- Adicione esse módulo no seu projeto, utilizando o **git submodules**
+- https://git-scm.com/docs/git-submodule
+> Exemplo
+```git
+git submodule add -f https://github.com/luketevl/paypal-express
+```
 - **Instale as dependencias**
 ```shell
 composer install
-```
-- Adicione esse módulo no seu projeto, utilizando o **git submodules**
-  - https://git-scm.com/docs/git-submodule
-> Exemplo
-```git
-git submodule add -f http://git.gat:81/sites/structure_v4.git
 ```
 - Configure o arquivo **config.php**
   - Modifique a variável de ambiente (**PAYPAL_SANDBOX**)
