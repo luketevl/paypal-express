@@ -28,7 +28,7 @@ class MyPayPal{
                             array(
                              'mode' => PAYPAL_SANDBOX ? 'sandbox' : 'live',
                              'log.LogEnabled' => true,
-                             'log.FileName' => '../PayPal.log',
+                             'log.FileName' => __DIR__.'/../PayPal.log',
                              'log.LogLevel' => 'INFO'
                             )
                           );
@@ -196,6 +196,7 @@ class MyPayPal{
   }
 
   public function isApproved($payment){
+    pre($payment);
     return $payment->getState() == PAYMENT_STATE_APPROVED;
   }
 
