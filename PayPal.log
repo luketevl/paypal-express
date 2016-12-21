@@ -42,3 +42,12 @@
 [21-12-2016 02:00:53] PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/payments/payment/PAY-7MS63998WE5397207LBNHYCA/execute
 [21-12-2016 02:00:54] PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 400
 [21-12-2016 02:00:54] PayPal\Core\PayPalHttpConnection : ERROR: Got Http response code 400 when accessing https://api.sandbox.paypal.com/v1/payments/payment/PAY-7MS63998WE5397207LBNHYCA/execute. {"name":"PAYMENT_ALREADY_DONE","message":"Payment has been done already for this cart.","information_link":"https://developer.paypal.com/docs/api/#PAYMENT_ALREADY_DONE","debug_id":"c17868cab5977"}
+[21-12-2016 05:07:12] PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/oauth2/token
+[21-12-2016 05:07:14] PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 200
+[21-12-2016 05:07:14] PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/payments/payment
+[21-12-2016 05:07:15] PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 201
+[21-12-2016 05:07:56] PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/oauth2/token
+[21-12-2016 05:07:57] PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 200
+[21-12-2016 05:07:57] PayPal\Core\PayPalHttpConnection : INFO: POST https://api.sandbox.paypal.com/v1/payments/payment
+[21-12-2016 05:07:58] PayPal\Core\PayPalHttpConnection : INFO: Response Status 	: 400
+[21-12-2016 05:07:58] PayPal\Core\PayPalHttpConnection : ERROR: Got Http response code 400 when accessing https://api.sandbox.paypal.com/v1/payments/payment. {"name":"VALIDATION_ERROR","details":[{"field":"payer","issue":"Credit_card payment method must use credit_card or cardit_card_token funding instrument."}],"message":"Invalid request. See details.","information_link":"https://developer.paypal.com/webapps/developer/docs/api/#VALIDATION_ERROR","debug_id":"b8834481b0b7e"}

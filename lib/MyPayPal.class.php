@@ -55,7 +55,7 @@ class MyPayPal{
     $incentive            = new Incentive();
     $fundingInstrument    = new FundingInstrument();
 
-    $payer->setPaymentMethod("paypal");
+    $payer->setPaymentMethod(PAYPAL_PAYMENT_METHOD);
 
     if(getVal('urlLogo', $data)){
       $incentive->setLogoImageUrl(PAYPAL_HDRIMG);
