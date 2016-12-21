@@ -4,16 +4,9 @@ spl_autoload_register(function ($class_name) {
 });
 
 $ex = new MyPayPal();
-if(count($_GET) > 0){
-  $result = $ex->executePayment($_GET['paymentId'], $_GET['PayerID']);
-  pre($result['result']->getState());
-  pre($ex->isApproved($result['result']));
-  pre($result);
-}
-else{
   $data = array(
     'description' => 'Test PAY',
-    'returnUrl' => 'http://localhost:8888/paypal-express/example.php/',
+    'returnUrl' => 'http://localhost:8888/paypal-express/executePayment.php/',
     'cancelUrl' => 'http://localhost:8888/paypal-express/example.php/',
     'shipping' => 0.01,
     'tax'     => 0.02,
@@ -29,6 +22,4 @@ else{
     )
   );
   pre($ex->createPayment($data));
-
-}
  ?>
