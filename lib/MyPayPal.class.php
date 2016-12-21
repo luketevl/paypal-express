@@ -12,7 +12,8 @@ use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Api\Incentive;
 use PayPal\Api\FundingInstrument;
-
+use PayPal\Api\ExecutePayment;
+use PayPal\Api\PaymentExecution;
 
 class MyPayPal{
   public function __construct(){
@@ -31,6 +32,8 @@ class MyPayPal{
                              'log.LogLevel' => 'INFO'
                             )
                           );
+
+    define('PAYMENT_STATE_APPROVED', 'approved');
   }
 
 
@@ -167,20 +170,42 @@ class MyPayPal{
     return $return;
   }
 
+  function executePayment($paymentId= '', $payerId=''){
+    $payment = Payment::get($paymentId, $this->apiContext);
+
+   $execution = new PaymentExecution();
+   $execution->setPayerId($payerId);
+
+   $return = array('result' => false);
+
+   try {
+     $result = $payment->execute($execution, $this->apiContext);
+     try {
+       $payment = Payment::get($paymentId, $this->apiContext);
+       $return['result'] = $payment;
+
+     } catch (Exception $e) {
+       $return = array_merge($return, $this->_getError($ex));
+     }
+
+   } catch (Exception $e) {
+      $return = array_merge($return, $this->_getError($ex));
+   }
+
+   return $return;
+  }
+
+  public function isApproved($payment){
+    return $payment->getState() == PAYMENT_STATE_APPROVED;
+  }
+
   private function _getError($param = array()){
     if(count($param) <= 0) return array('error' => false);
-
     $data   = json_decode($param->getData());
     $return = array(
                     'error'   => $data->details
     );
-
     return $return;
   }
-
-
-
-
-
 }
  ?>
