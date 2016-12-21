@@ -13,4 +13,4 @@ define('PAYPAL_LOCALECODE', 'pt_br'); // Idioma
 define('PAYPAL_CURRENCY',   'BRL'); // Idioma
 define('PAYPAL_HDRIMG',     ''); // URL COMPLETA da LOGO para checkout PayPAL
 
-define('PAYPAL_PAYMENT_METHOD',     PAYPAL_PAYMENT_METHOD_CREDIT_CARD); // URL COMPLETA da LOGO para checkout PayPAL
+define('PAYPAL_PAYMENT_METHOD',     PAYPAL_PAYMENT_METHOD_CREDIT_CARD);// METODO
