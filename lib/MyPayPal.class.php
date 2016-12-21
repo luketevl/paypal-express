@@ -185,11 +185,11 @@ class MyPayPal{
        $return['result'] = $payment;
 
      } catch (Exception $e) {
-       $return = array_merge($return, $this->_getError($ex));
+       $return = array_merge($return, $this->_getError($e));
      }
 
    } catch (Exception $e) {
-      $return = array_merge($return, $this->_getError($ex));
+      $return = array_merge($return, $this->_getError($e));
    }
 
    return $return;

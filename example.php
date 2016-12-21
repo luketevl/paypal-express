@@ -6,8 +6,8 @@ spl_autoload_register(function ($class_name) {
 $ex = new MyPayPal();
   $data = array(
     'description' => 'Test PAY',
-    'returnUrl' => 'http://localhost:8888/paypal-express/executePayment.php/',
-    'cancelUrl' => 'http://localhost:8888/paypal-express/example.php/',
+    'returnUrl' => 'http://localhost/paypal-express/executePayment.php/',
+    'cancelUrl' => 'http://localhost/paypal-express/example.php/',
     'shipping' => 0.01,
     'tax'     => 0.02,
 
