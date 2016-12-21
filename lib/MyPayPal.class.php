@@ -196,6 +196,8 @@ class MyPayPal{
   }
 
   public function isApproved($payment){
+    if(is_bool($payment)) return false;
+
     return $payment->getState() == PAYMENT_STATE_APPROVED;
   }
 
