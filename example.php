@@ -16,7 +16,7 @@ $ex = new MyPayPal();
         'cod' => time(),
         'name' => 'My item',
         'description' => 'My description',
-        'price'       => 0.10,
+        'price'       => "2,499.00",
         'qty'         => 3
       )
     )
