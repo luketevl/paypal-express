@@ -1,3 +1,4 @@
 composer.phar
 /vendor/
 PayPal.log
+config.php
