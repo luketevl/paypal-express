@@ -1,7 +1,6 @@
 <?php
 require __DIR__  . '/../vendor/autoload.php';
 require_once __DIR__.'/../config.php';
-
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\Item;
@@ -12,32 +11,28 @@ use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Api\Incentive;
 use PayPal\Api\FundingInstrument;
-
-
+use PayPal\Api\ExecutePayment;
+use PayPal\Api\PaymentExecution;
 class MyPayPal{
   public function __construct(){
-
     $this->apiContext =
     new \PayPal\Rest\ApiContext(
       new \PayPal\Auth\OAuthTokenCredential(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET)
     );
-
     // Config
     $this->apiContext->setConfig(
                             array(
                              'mode' => PAYPAL_SANDBOX ? 'sandbox' : 'live',
                              'log.LogEnabled' => true,
-                             'log.FileName' => '../PayPal.log',
+                             'log.FileName' => __DIR__.'/../PayPal.log',
                              'log.LogLevel' => 'INFO'
                             )
                           );
+    define('PAYMENT_STATE_APPROVED', 'approved');
   }
-
-
-
-
-
-  public function createPayment($data = array()){
+  
+  
+  public function createPayment($data = array(), $payPlus = false){
     if(empty($data)) return false;
 
     // ### Payer
@@ -110,49 +105,61 @@ class MyPayPal{
         ->setInvoiceNumber(uniqid());
 
     $fundingInstrument->setIncentive($incentive);
+    $return = array('result' => false, 'paymentId' => false);
 
-    // ### Redirect urls
-    // Set the urls that the buyer must be redirected to after
-    // payment approval/ cancellation.
-    //$baseUrl = getBaseUrl();
-    if(empty(getVal('returnUrl', $data))){
-      //$redirectUrls->setReturnUrl("$baseUrl/ExecutePayment.php?success=true");
-    }
-    else{
-      $redirectUrls->setReturnUrl(getVal('returnUrl', $data));
-    }
-    if(empty(getVal('cancelUrl', $data))){
-      //$redirectUrls->setCancelUrl("$baseUrl/ExecutePayment.php?success=false");
-    }
-    else{
-      $redirectUrls->setCancelUrl(getVal('cancelUrl', $data));
-    }
+    try{
+      if($payPlus) {
+        $data['returnUrl'] = getVal('urlSite', $data);
+        $data['cancelUrl'] = getVal('urlSite', $data);
+      }
+      // ### Redirect urls
+      // Set the urls that the buyer must be redirected to after
+      // payment approval/ cancellation.
+      //$baseUrl = getBaseUrl();
+      if(empty(getVal('returnUrl', $data))){
+        //$redirectUrls->setReturnUrl("$baseUrl/ExecutePayment.php?success=true");
+      }
+      else{
+        $redirectUrls->setReturnUrl(getVal('returnUrl', $data));
+      }
+      if(empty(getVal('cancelUrl', $data))){
+        //$redirectUrls->setCancelUrl("$baseUrl/ExecutePayment.php?success=false");
+      }
+      else{
+        $redirectUrls->setCancelUrl(getVal('cancelUrl', $data));
+      }
 
-    // ### Payment
-    // A Payment Resource; create one using
-    // the above types and intent set to 'sale'
-    $payment = new Payment();
-    $payment->setIntent("sale")
-        ->setPayer($payer)
-        ->setRedirectUrls($redirectUrls)
-        ->setTransactions(array($transaction));
+      // ### Payment
+      // A Payment Resource; create one using
+      // the above types and intent set to 'sale'
+      $payment = new Payment();
+      $payment->setIntent("sale")
+          ->setPayer($payer)
+          ->setRedirectUrls($redirectUrls)
+          ->setTransactions(array($transaction));
+      if($payPlus){
+        $payment->application_context = array(
+              "locale"=> "pt-BR",
+              "brand_name"=> getVal('brand_name', $data),
+              "shipping_preference"=> getVal('shipping_preference', $data),
+              "user_action"=> "continue"
+        );
+      }
 
-    // For Sample Purposes Only.
-    $request = clone $payment;
-    // ### Create Payment
-    // Create a payment by calling the 'create' method
-    // passing it a valid apiContext.
-    // (See bootstrap.php for more on `ApiContext`)
-    // The return object contains the state and the
-    // url to which the buyer must be redirected to
-    // for payment approval
+      // For Sample Purposes Only.
+      $request = clone $payment;
+      // ### Create Payment
+      // Create a payment by calling the 'create' method
+      // passing it a valid apiContext.
+      // (See bootstrap.php for more on `ApiContext`)
+      // The return object contains the state and the
+      // url to which the buyer must be redirected to
+      // for payment approval
 
-    $return = array('result' => false);
-
-    try {
-        $payment->create($this->apiContext);
+      $payment->create($this->apiContext);
         $return['result'] = array(
-                                  'urlPay' => $payment->getApprovalLink()
+                                  'urlPay' => $payment->getApprovalLink(),
+                                  'paymentId' => $payment->getId()
         );
     }
     catch (Exception $ex) {
@@ -160,27 +167,43 @@ class MyPayPal{
       $return = array_merge($return, $this->_getError($ex));
 
     }
+
     // ### Get redirect url
     // The API response provides the url that you must redirect
     // the buyer to. Retrieve the url from the $payment->getApprovalLink()
     // method
     return $return;
   }
-
+  
+  function executePayment($paymentId= '', $payerId=''){
+    $payment = Payment::get($paymentId, $this->apiContext);
+   $execution = new PaymentExecution();
+   $execution->setPayerId($payerId);
+   $return = array('result' => false);
+   try {
+     $result = $payment->execute($execution, $this->apiContext);
+     try {
+       $payment = Payment::get($paymentId, $this->apiContext);
+       $return['result'] = $payment;
+     } catch (Exception $e) {
+       $return = array_merge($return, $this->_getError($e));
+     }
+   } catch (Exception $e) {
+      $return = array_merge($return, $this->_getError($e));
+   }
+   return $return;
+  }
+  public function isApproved($payment){
+    if(is_bool($payment)) return false;
+    return $payment->getState() == PAYMENT_STATE_APPROVED;
+  }
   private function _getError($param = array()){
     if(count($param) <= 0) return array('error' => false);
-
     $data   = json_decode($param->getData());
     $return = array(
                     'error'   => $data->details
     );
-
     return $return;
   }
-
-
-
-
-
 }
  ?>
