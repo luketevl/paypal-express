@@ -25,7 +25,7 @@
         if(empty($number)){
           return 0;
         }
-        return number_format($number, 2);
+        return str_replace(',','', $number);
       }
       catch (Exception $e) {
           return 0;
