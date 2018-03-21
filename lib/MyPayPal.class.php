@@ -120,13 +120,13 @@ class MyPayPal{
         //$redirectUrls->setReturnUrl("$baseUrl/ExecutePayment.php?success=true");
       }
       else{
-        $redirectUrls->setReturnUrl(getVal('returnUrl', $data));
+        $redirectUrls->setReturnUrl(trim(getVal('returnUrl', $data)));
       }
       if(empty(getVal('cancelUrl', $data))){
         //$redirectUrls->setCancelUrl("$baseUrl/ExecutePayment.php?success=false");
       }
       else{
-        $redirectUrls->setCancelUrl(getVal('cancelUrl', $data));
+        $redirectUrls->setCancelUrl(trim(getVal('cancelUrl', $data)));
       }
 
       // ### Payment
